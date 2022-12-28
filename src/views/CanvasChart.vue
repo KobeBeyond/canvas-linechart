@@ -10,18 +10,32 @@ const props = defineProps({
   },
 });
 console.log(props);
-onMounted(() => {
+
+const init = () => {
   const canvas = document.getElementById("canvas") as HTMLCanvasElement;
   if (canvas?.getContext) {
     const ctx = canvas.getContext("2d");
     if (ctx) {
-      ctx.fillStyle = "rgb(200,0,0)";
-      ctx.fillRect(10, 10, 55, 50);
+      ctx.beginPath();
+      ctx.moveTo(40, 280);
+      ctx.lineTo(560, 280);
+      ctx.stroke();
+      ctx.moveTo(550, 274);
+      ctx.lineTo(560, 280);
 
-      ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
-      ctx.fillRect(30, 30, 55, 50);
+      ctx.lineTo(550, 286);
+      ctx.stroke();
+      ctx.moveTo(40, 280);
+      ctx.lineTo(40, 20);
+      ctx.moveTo(34, 30);
+      ctx.lineTo(40, 20);
+      ctx.lineTo(46, 30);
+      ctx.stroke();
     }
   }
+};
+onMounted(() => {
+  init();
 });
 </script>
 <style lang="less" scoped></style>
