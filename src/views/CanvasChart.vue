@@ -1,5 +1,6 @@
 <template>
   <canvas id="canvas" width="600" height="300"></canvas>
+  <canvas id="_canvas" width="600" height="300"></canvas>
 </template>
 <script setup lang="ts">
 import { onMounted, PropType, computed, ref } from "vue";
@@ -24,6 +25,8 @@ const props = defineProps({
 });
 const canvas = ref<HTMLCanvasElement>();
 const ctx = ref<CanvasRenderingContext2D>();
+const _canvas = ref<HTMLCanvasElement>();
+const _ctx = ref<CanvasRenderingContext2D>();
 const xStepLength = computed(() => 520 / (props.xAxis.length + 1));
 const yStepLength = computed(() => 260 / props.yAxis.length);
 const init = (ctx: CanvasRenderingContext2D) => {
@@ -290,21 +293,7 @@ const drawSmoothChart = () => {
   };
 
   // 需要外部停止绘制时使用
-  let animationId = 0;
-
-  // staticData是传入的数据, 这里是一些示例的数据
-  const staticData = [
-    [10, 341.02601317115307],
-    [60, 367.53590353849495],
-    [110, 55.44857431904126],
-    [160, 228.40188926709214],
-    [210, 243.49719756836208],
-    [260, 31.12232864622555],
-    [310, 312.980045442814],
-    [360, 380.36533757874724],
-    [410, 153.25910899820738],
-    [460, 370.25905804521585],
-  ];
+  let animationId: number;
 
   let originPoints = realPos.value;
   // 绘制曲线的平滑度(0到1)
@@ -407,19 +396,13 @@ const drawSmoothChart = () => {
     gradient.addColorStop(nowLastLinePercent, "white");
     gradient.addColorStop(1, "white");
 
-    // 设置填充样式
     ctx.strokeStyle = gradient;
 
-    // 绘制曲线
     drawPointsSmoothLine(ctx, points, smoothDegree);
 
-    // 画出所有节点
     for (let i = 0; i < points.length; i++) {
       drawPoint(ctx, points[i][0], points[i][1], 2, "red");
     }
-
-    // 画出当前所在点
-    // drawPoint(smoothCanvasContext2D, NowPoint, 2, 'red')
 
     animationId = window.requestAnimationFrame((timestamp: number) =>
       draw(timestamp, ctx)
@@ -438,6 +421,13 @@ onMounted(() => {
     drawChart(ctx.value);
     fillChart(ctx.value);
     drawSmoothChart();
+  }
+  _canvas.value = document.getElementById("_canvas") as HTMLCanvasElement;
+  if (_canvas.value) {
+    _ctx.value = _canvas.value.getContext("2d") as CanvasRenderingContext2D;
+    init(_ctx.value);
+    drawChart(_ctx.value);
+    fillChart(_ctx.value);
   }
 });
 </script>
