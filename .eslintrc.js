@@ -1,14 +1,14 @@
 module.exports = {
   root: true,
   env: {
-    "node": true
+    node: true,
   },
   ignorePatterns: ["/.vscode/**/*", "/dist/**/*", "/public/**/*"],
   extends: [
     "plugin:vue/vue3-essential",
     "eslint:recommended",
     "@vue/typescript/recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
   ],
   plugins: ["@typescript-eslint"],
   parser: "vue-eslint-parser",
@@ -30,14 +30,14 @@ module.exports = {
       // and vue interpolations (e.g. `{{variable}}`).
       // If not specified, the parser determined by `<script lang ="...">` is used.
       // "<template>": "typescript-estree",
-    }
+    },
   },
   globals: {
     defineProps: "readonly",
-    defineEmits: "readonly"
+    defineEmits: "readonly",
   },
   parserOptions: {
-    "ecmaVersion": 2020
+    ecmaVersion: 2020,
   },
   settings: {
     "import/resolver": {
@@ -45,5 +45,7 @@ module.exports = {
       node: true,
     },
   },
-  rules: {}
-}
+  rules: {
+    "no-debugger": "off",
+  },
+};
